@@ -2,9 +2,9 @@
 redis-lua-scaling-bloom-filter
 ==============================
 
-`add.lua`, `cas.lua` and `check.lua` are three lua scripts for a [scaling bloom filter](http://en.wikipedia.org/wiki/Bloom_filter#Scalable_Bloom_filters) for [Redis](http://redis.io/)
+[`add.lua`](src/add.lua), [`cas.lua`](src/cas.lua) and [`check.lua`](src/check.lua) are three lua scripts for a [scaling bloom filter](http://en.wikipedia.org/wiki/Bloom_filter#Scalable_Bloom_filters) for [Redis](http://redis.io/)
 
-`layer-add.lua` and `later-check.lua` are two lua scripts for a [scaling layered bloom filter](https://en.wikipedia.org/wiki/Bloom_filter#Layered_Bloom_filters) for [Redis](http://redis.io/)
+[`layer-add.lua`](src/layer-add.lua) and [`layer-check.lua`](src/layer-check.lua) are two lua scripts for a [scaling layered bloom filter](https://en.wikipedia.org/wiki/Bloom_filter#Layered_Bloom_filters) for [Redis](http://redis.io/)
 
 The scripts are to be executed using the [EVAL](http://redis.io/commands/eval) command in Redis.
 
@@ -13,21 +13,21 @@ _These scripts will probably not work on Redis cluster since the keys used insid
 The layered filter has a maximum number of 32 layers. You can modify this in the source.
 
 
-`add.lua`, `cas.lua` and `layer-add.lua`
+[`add.lua`](src/add.lua), [`cas.lua`](src/cas.lua) and [`layer-add.lua`](src/layer-add.lua)
 ----------------------------------------
 
-The `add.lua` script adds a new element to the filter. It will create the filter when it doesn't exist yet.
+The [`add.lua`](src/add.lua) script adds a new element to the filter. It will create the filter when it doesn't exist yet.
 
-`cas.lua` does a Check And Set, this will not add the element if it doesn't already exist.
-`cas.lua` will return 0 if the element is added, or 1 if the element was already in the filter.
-Since we use a scaling filter adding an element using `add.lua` might cause the element
-to exist in multiple parts of the filter at the same time. `cas.lua` prevents this.
-Using only `cas.lua` the `:count` key of the filter will accurately count the number of elements added to the filter.
-Only using `cas.lua` will also lower the number of false positives by a small amount (less duplicates in the filter means less bits set).
+[`cas.lua`](src/cas.lua) does a Check And Set, this will not add the element if it doesn't already exist.
+[`cas.lua`](src/cas.lua) will return 0 if the element is added, or 1 if the element was already in the filter.
+Since we use a scaling filter adding an element using [`add.lua`](src/add.lua) might cause the element
+to exist in multiple parts of the filter at the same time. [`cas.lua`](src/cas.lua) prevents this.
+Using only [`cas.lua`](src/cas.lua) the `:count` key of the filter will accurately count the number of elements added to the filter.
+Only using [`cas.lua`](src/cas.lua) will also lower the number of false positives by a small amount (less duplicates in the filter means less bits set).
 
-`layer-add.lua` does a similar thing to `cas.lua` since this is necessary for the layer part to work
+[`layer-add.lua`](src/layer-add.lua) does a similar thing to [`cas.lua`](src/cas.lua) since this is necessary for the layer part to work
 (need to check all the filters in a layer to see if it already exists in the layer).
-`layer-add.lua` will return the layer number the element was added to.
+[`layer-add.lua`](src/layer-add.lua) will return the layer number the element was added to.
 
 These scripts expects 4 arguments.
 
@@ -45,12 +45,12 @@ eval "add.lua source here" 0 test 10000 0.01 something
 `
 
 
-`check.lua` and `layer-check.lua`
+[`check.lua`](src/check.lua) and [`layer-check.lua`](src/layer-check.lua)
 ---------------------------------
 
-The `check.lua` and `layer-check.lua` scripts check if an element is contained in the bloom filter.
+The [`check.lua`](src/check.lua) and [`layer-check.lua`](src/layer-check.lua) scripts check if an element is contained in the bloom filter.
 
-`layer-check.lua` returns the layer the element was found in.
+[`layer-check.lua`](src/layer-check.lua) returns the layer the element was found in.
 
 These scripts expects 4 arguments.
 
