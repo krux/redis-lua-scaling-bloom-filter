@@ -11,7 +11,7 @@
 
 ### The dir for the package script
 MY_DIR=$( dirname $0 )
-cd $MY_DIR
+cd $MY_DIR/..
 
 ### Build debian pckages by default, but any other type will do if FPM understands it.
 TYPE=${1:-deb}
@@ -30,12 +30,12 @@ PACKAGE_VERSION=$VERSION~$( date -u +%Y%m%d%H%M )
 PACKAGE_NAME=$NAME
 
 ### List of files to package
-FILES="*.lua *.js *.md"
+FILES="bin/ src/ test/ *.md"
 
 ### Where this package will be installed
 DEST_DIR="/usr/local/${NAME}/"
 
 ### Where the sources live
-SOURCE_DIR=$MY_DIR
+SOURCE_DIR=.
 
 fpm -s dir -t $TYPE -a all -n $PACKAGE_NAME -v $PACKAGE_VERSION --prefix $DEST_DIR -C $SOURCE_DIR $FILES
