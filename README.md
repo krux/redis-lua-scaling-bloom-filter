@@ -155,3 +155,20 @@ layer-check.lua
 1797.59 requests per second
 ```
 
+Packaging
+---------
+
+To create a debian, RPM or any other package [FPM]() understands, you can run:
+
+```
+# Generates debian package by default
+$ bin/package.sh
+Created package {:path=>"redis-lua-scaling-bloom-filter_1~201608192336_all.deb"}
+```
+
+```
+# Generate a RPM package
+$ bin/package.sh
+Created package {:path=>"redis-lua-scaling-bloom-filter_1~201608192336.rpm"}
+```
+
