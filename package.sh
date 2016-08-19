@@ -24,9 +24,7 @@ rm -f *.$TYPE
 ### Name of the package, project, etc
 NAME=redis-lua-scaling-bloom-filter
 
-
-### XXX surely there's a maven command or something?
-_GIT_VERSION=`git tag -l | head -1`
+_GIT_VERSION=`git tag -l | tail -n 1`
 VERSION=${_GIT_VERSION:-1}
 PACKAGE_VERSION=$VERSION~$( date -u +%Y%m%d%H%M )
 PACKAGE_NAME=$NAME
