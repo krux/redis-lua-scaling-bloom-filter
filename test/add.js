@@ -7,8 +7,8 @@ var srand = require('srand');
 
 var client = redis.createClient(6379, '127.0.0.1');
 
-var addsource   = fs.readFileSync('add.lua', 'ascii');
-var checksource = fs.readFileSync('check.lua', 'ascii');
+var addsource   = fs.readFileSync('src/add.lua', 'ascii');
+var checksource = fs.readFileSync('src/check.lua', 'ascii');
 
 var entries   = process.argv[2] || 10000;
 var precision = process.argv[3] || 0.01;
