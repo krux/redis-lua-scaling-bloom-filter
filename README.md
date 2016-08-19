@@ -73,12 +73,12 @@ Tests
 
 ```
 $ npm install redis srand
-$ node add.js
-$ node cas.js
-$ node check.js
+$ node test/add.js
+$ node test/cas.js
+$ node test/check.js
 $ # or/and
-$ node layer-add.js
-$ node layer-check.js
+$ node test/layer-add.js
+$ node test/layer-check.js
 ```
 
 `add.js` and `layer-add.js` will add elements to a filter named test and then check if the elements are part of the filter.
@@ -91,7 +91,7 @@ Both script assume Redis is running on the default port.
 Benchmark
 ---------
 
-You can run `./benchmark.sh` and `./layer-benchmark.sh` to see how fast the scripts are.
+You can run `./bin/benchmark.sh` and `./bin/layer-benchmark.sh` to see how fast the scripts are.
 
 This script assumes Redis is running on the default port and `redis-cli` and `redis-benchmark` are installed.
 
