@@ -15,6 +15,8 @@ REDIS_HASH=_bloom_commands
 SCRIPT_DIR=$MY_DIR/../src
 SCRIPT_SUFFIX=.lua
 
+VERBOSE=false
+
 ###
 ### Option parsing
 ###
@@ -22,11 +24,13 @@ SCRIPT_SUFFIX=.lua
 # Reset in case getopts has been used previously in the shell.
 OPTIND=1
 
-while getopts "evc:h:p:P:H:" opt; do
+while getopts "EvVc:h:p:P:H:" opt; do
     case "$opt" in
-    v)  set -x     # Verbose
+    v)  VERBOSE=true    # Print diagnostics
         ;;
-    e)  set -e     # Exit on error
+    V)  set -x          # Verbose script execution
+        ;;
+    E)  set -e          # Exit on error
         ;;
     c) REDIS_CLI=$OPTARG
         ;;
@@ -61,5 +65,7 @@ do
     ### Now, make the command discoverable to clients
     rv=`$REDIS_CLI $REDIS_OPTS HSET $REDIS_HASH $name $sha1`
 
-    echo "Command $name has SHA $sha1"
+    $VERBOSE && echo "Command $name has SHA $sha1"
 done
+
+$VERBOSE && echo "All command/sha1 mappings recording in redis hash $REDIS_HASH"
