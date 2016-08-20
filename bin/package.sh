@@ -33,7 +33,7 @@ PACKAGE_NAME=$NAME
 ### Where the scripts live
 SCRIPT_DIR=src
 SCRIPT_SUFFIX=.lua
-for name in `ls -1 $SCRIPT_DIR | xargs basename $SCRIPT_SUFFIX`
+for name in `ls -1 $SCRIPT_DIR | xargs -I% basename % $SCRIPT_SUFFIX`
 do
     sha1=$( cat $SCRIPT_DIR/$name$SCRIPT_SUFFIX | openssl sha1 )
     echo $sha1 > sha1/$name
