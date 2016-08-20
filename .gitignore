@@ -1,3 +1,4 @@
 node_modules
 *.rpm
 *.deb
+sha1/*
