@@ -11,7 +11,7 @@
 
 ### The dir for the package script
 MY_DIR=$( dirname $0 )
-cd $MY_DIR
+cd $MY_DIR/..
 
 ### Build debian pckages by default, but any other type will do if FPM understands it.
 TYPE=${1:-deb}
@@ -29,13 +29,24 @@ VERSION=${_GIT_VERSION:-1}
 PACKAGE_VERSION=$VERSION~$( date -u +%Y%m%d%H%M )
 PACKAGE_NAME=$NAME
 
+### List all the SHA1s for this package, for easier use by the client
+### Where the scripts live
+SCRIPT_DIR=src
+SCRIPT_SUFFIX=.lua
+for name in `ls -1 $SCRIPT_DIR | xargs basename -s $SCRIPT_SUFFIX`
+do
+    sha1=$( cat $SCRIPT_DIR/$name$SCRIPT_SUFFIX | openssl sha1 )
+    echo $sha1 > sha1/$name
+done
+
+
 ### List of files to package
-FILES="*.lua *.js *.md"
+FILES="bin/ src/ test/ sha1/ *.md"
 
 ### Where this package will be installed
 DEST_DIR="/usr/local/${NAME}/"
 
 ### Where the sources live
-SOURCE_DIR=$MY_DIR
+SOURCE_DIR=.
 
 fpm -s dir -t $TYPE -a all -n $PACKAGE_NAME -v $PACKAGE_VERSION --prefix $DEST_DIR -C $SOURCE_DIR $FILES

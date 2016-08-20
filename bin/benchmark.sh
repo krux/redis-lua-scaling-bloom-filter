@@ -1,9 +1,11 @@
 #!/bin/sh
 
+MY_DIR=$( dirname $0 )
+
 # Get the SHA1 hash for our scripts by simply generating an error and
 # filtering out the hash.
-add=`redis-cli --eval add.lua | sed 's/.*f_\([0-9a-z]\{40\}\).*/\1/'`
-check=`redis-cli --eval check.lua | sed 's/.*f_\([0-9a-z]\{40\}\).*/\1/'`
+add=`redis-cli --eval $MY_DIR/../src/add.lua | sed 's/.*f_\([0-9a-z]\{40\}\).*/\1/'`
+check=`redis-cli --eval $MY_DIR/../src/check.lua | sed 's/.*f_\([0-9a-z]\{40\}\).*/\1/'`
 
 # Find a free key to use.
 # 10 characters should be enough to find a free key quickly.
