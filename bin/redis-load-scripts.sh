@@ -22,9 +22,11 @@ SCRIPT_SUFFIX=.lua
 # Reset in case getopts has been used previously in the shell.
 OPTIND=1
 
-while getopts "vc:h:p:P:H:" opt; do
+while getopts "evc:h:p:P:H:" opt; do
     case "$opt" in
-    v)  set -xe
+    v)  set -x     # Verbose
+        ;;
+    e)  set -e     # Exit on error
         ;;
     c) REDIS_CLI=$OPTARG
         ;;
