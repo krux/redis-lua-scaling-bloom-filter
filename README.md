@@ -155,6 +155,35 @@ layer-check.lua
 1797.59 requests per second
 ```
 
+Loading the code
+----------------
+
+From an operational perspective, you may want to ensure this code consistently available in Redis' that you maintain for Bloomfilter purposes. To that end, this repository comes with a [redis-load-scripts.sh](bin/redis-load-scripts.sh) script that will load up the relevant scripts and provide a hash key to look up the SHA that corresponds to the relevant command:
+
+```
+# Basic invocation - see source for additional options on host, port, password, bloomkeys, etc
+$ bin/redis-load-scripts.sh -v 
+Command add has SHA ab31647b3931a68b3b93a7354a297ed273349d39
+Command cas has SHA 154f6c20210cf15f5d5da82e695ef908b7f8d8a5
+Command check has SHA d169e5dd5add9b8bf522beb98468230073bca5dd
+Command layer-add has SHA 7ae29948e3096dd064c22fcd8b628a5c77394b0c
+Command layer-check has SHA c1386438944daedfc4b5c06f79eadb6a83d4b4ea
+All command/sha1 mappings recording in redis hash _bloom_commands
+```
+
+And then your client can access the commands as follows:
+
+```
+$ redis-cli 
+> HGET _bloom_commands check
+d169e5dd5add9b8bf522beb98468230073bca5dd
+> evalsha d169e5dd5add9b8bf522beb98468230073bca5dd 0 test 10000 0.01 something
+(integer) 0
+```
+
+By using this in conjunction with the packaging setup below, you can ensure that the correct version of the code is always loaded via a post-startup hook in Redis. **Note that when you restart redis, the script cache is flushed, so the post-startup hook is necessary.**
+
+
 Packaging
 ---------
 
